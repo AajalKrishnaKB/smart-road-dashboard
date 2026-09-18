@@ -18,6 +18,9 @@ export default function Dashboard() {
     Solar: 0.00,
     Piezo: 0.00,
     LightState: 0,
+    LDR_Day: 0,
+    LDR_Left: 0,
+    LDR_Right: 0,
   });
 
   const [stepCount, setStepCount] = useState(0);
@@ -34,7 +37,7 @@ export default function Dashboard() {
     return () => unsubscribe();
   }, []);
 
-  // Kinetic Step Counter Logic (Increments when piezo spikes above 0.2V)
+  // Kinetic Step Counter Logic
   useEffect(() => {
     if (sensorData.Piezo > 0.20) {
       setStepCount(prev => prev + 1);
@@ -102,7 +105,6 @@ export default function Dashboard() {
             <div className="text-5xl font-bold text-slate-100">{Number(sensorData.Voltage).toFixed(2)}<span className="text-2xl text-slate-500 ml-1">V</span></div>
             <div className="text-emerald-400 font-semibold">{batteryPercentage}%</div>
           </div>
-          {/* Battery Progress Bar */}
           <div className="w-full bg-slate-800 rounded-full h-1.5 mb-6">
             <div className="bg-emerald-500 h-1.5 rounded-full transition-all duration-500" style={{ width: `${batteryPercentage}%` }}></div>
           </div>
@@ -133,8 +135,8 @@ export default function Dashboard() {
               <span className="text-emerald-400 text-sm font-medium">Online</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-slate-500 text-sm">Generation</span>
-              <span className="text-slate-300 text-sm">{sensorData.Solar > 0.5 ? 'Active' : 'Idle'}</span>
+              <span className="text-slate-500 text-sm">Raw LDR (L / R)</span>
+              <span className="text-slate-300 text-sm font-mono">{sensorData.LDR_Left} / {sensorData.LDR_Right}</span>
             </div>
           </div>
         </div>
@@ -171,8 +173,8 @@ export default function Dashboard() {
               <span className="text-emerald-400 text-sm font-medium">{powerSaved}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-slate-500 text-sm">Laser Break-Beam</span>
-              <span className="text-slate-300 text-sm font-medium">Armed</span>
+              <span className="text-slate-500 text-sm">Ambient Light</span>
+              <span className="text-slate-300 text-sm font-mono">{sensorData.LDR_Day}</span>
             </div>
           </div>
         </div>
